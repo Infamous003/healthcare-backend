@@ -1,18 +1,19 @@
 from .models import Patient
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .serializers import (
     PatientCreateSerializer,
     PatientPublicSerializer,
-    PatientSerializer,
     PatientUpdateSerializer,
     RegisterSerializer
 )
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 # ----- Patient endpoints -----
 
 @api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated])
 def patients_list(request):
     if request.method == "GET":
         patients = Patient.objects.all()
@@ -21,12 +22,6 @@ def patients_list(request):
         return Response(serializer.data, status=200)
     
     elif request.method == "POST":
-        # if not request.user or not request.user.is_authenticated:
-        #     return Response(
-        #         {"detail": "Unauthorized access"},
-        #         status=status.HTTP_401_UNAUTHORIZED
-        #     )
-        
         serializer = PatientCreateSerializer(data=request.data)
 
         if serializer.is_valid():
