@@ -1,7 +1,30 @@
 # healthcare-backend
 
 This is the solution for the WhatBytes assignment. 
-It is a backend for a hospital management system built with Django, DRF, and PostgreSQL as the database. It uses JWT-based Authentication. Use a client like cURL or Postman or RestFox
+It is a backend for a hospital management system built with Django, DRF, and PostgreSQL as the database. It uses JWT-based Authentication. Use an API client like cURL or Postman or RestFox
+
+## Test coverage
+- Wrote test cases for Auth, Patients, and Doctor endpoints. With 15+ testcases. 
+- Coverage report
+
+```bash
+Name                                                                              Stmts   Miss  Cover
+-----------------------------------------------------------------------------------------------------
+hospital/__init__.py                                                                  0      0   100%
+hospital/admin.py                                                                     1      0   100%
+hospital/apps.py                                                                      4      0   100%
+hospital/migrations/0001_initial.py                                                   8      0   100%
+hospital/migrations/0002_alter_patientdoctormapping_unique_together_and_more.py       6      0   100%
+hospital/migrations/0003_alter_patient_created_by.py                                  6      0   100%
+hospital/migrations/__init__.py                                                       0      0   100%
+hospital/models.py                                                                   32      3    91%
+hospital/serializers.py                                                              57      0   100%
+hospital/tests.py                                                                   105      0   100%
+hospital/urls.py                                                                      4      0   100%
+hospital/views.py                                                                   110     36    67%
+-----------------------------------------------------------------------------------------------------
+TOTAL                                                                               333     39    88%
+```
 
 ## Features:
 - Endpoint for patients
@@ -25,6 +48,10 @@ DATABASE_HOST=localhost
 DATABASE_PORT=5432
 ```
 - Apply migrations
+- Run the test cases
+```json
+coverage run --source='hospital' manage.py test
+```
 - Run the server
 
 ### API endpoints:
