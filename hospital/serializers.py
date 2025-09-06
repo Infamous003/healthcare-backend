@@ -24,7 +24,6 @@ class PatientUpdateSerializer(serializers.ModelSerializer):
         fields = ["firstname", "lastname", "age", "email"]
 
 
-
 # ----- User Serializers -----
 class RegisterSerializer(serializers.ModelSerializer):
     # This makes sure that the passwords aren't read
@@ -68,7 +67,6 @@ class DoctorUpdateSerializer(serializers.ModelSerializer):
 
 
 # ----- Mappings Serializers -----
-
 class MappingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PatientDoctorMapping

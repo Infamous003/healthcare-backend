@@ -7,7 +7,6 @@ from .serializers import (
     PatientUpdateSerializer,
     RegisterSerializer,
 
-    DoctorSerializer,
     DoctorPublicSerializer,
     DoctorCreateSerializer,
     DoctorUpdateSerializer,
@@ -118,7 +117,6 @@ def doctor_detail(request, pk):
         doctor.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-
 
 # ----- Mappings endpoints -----
 
