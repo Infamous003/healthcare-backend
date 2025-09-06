@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 GENDER_CHOICES = [
     ("M", "Male"),
@@ -13,6 +14,8 @@ class Patient(models.Model):
     email = models.EmailField(max_length=128, unique=True, help_text="Enter the patient's email address")
     age = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(120)], help_text="Enter the patient's age")
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, help_text="Select the patient's gender")
+
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="patients")
 
     def __str__(self):
         return f"{self.firstname} {self.lastname}"

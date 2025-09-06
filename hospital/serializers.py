@@ -6,12 +6,12 @@ from django.contrib.auth.models import User
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
-        fields = ["id", "firstname", "lastname", "email", "age", "gender"]
+        fields = ["id", "firstname", "lastname", "email", "age", "gender", "created_by"]
 
 class PatientPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
-        fields = ["firstname", "lastname", "age", "gender"]
+        fields = ["firstname", "lastname", "age", "gender", "created_by"]
 
 class PatientCreateSerializer(serializers.ModelSerializer):
     class Meta:

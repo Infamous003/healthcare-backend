@@ -24,7 +24,8 @@ from rest_framework.permissions import IsAuthenticated
 @permission_classes([IsAuthenticated])
 def patients_list(request):
     if request.method == "GET":
-        patients = Patient.objects.all()
+        # getting only the patients that are owned by the logged in user
+        patients = Patient.objects.filter(created_by=request.user)
         serializer = PatientPublicSerializer(patients, many=True)
 
         return Response(serializer.data, status=200)
@@ -33,7 +34,7 @@ def patients_list(request):
         serializer = PatientCreateSerializer(data=request.data)
 
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(created_by=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -48,6 +49,10 @@ def patient_detail(request, pk):
     if request.method == "GET":
         serializer = PatientPublicSerializer(patient)
         return Response(serializer.data, status=200)
+
+    # Making sure that only the user who owns the patient can edit/delete them
+    if patient.created_by != request.user:
+            return Response({"detail": "Not allowed"}, status=status.HTTP_403_FORBIDDEN)
 
     elif request.method == "PUT":
         serializer = PatientUpdateSerializer(patient, data=request.data, partial=True)
