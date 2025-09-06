@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Patient
+from .models import Patient, Doctor
 from django.contrib.auth.models import User
 
 # ----- Patient Serializers -----
@@ -43,3 +43,25 @@ class RegisterSerializer(serializers.ModelSerializer):
             password = validated_data["password"]
         )
         return user
+
+
+# ----- Doctor Serializers -----
+class DoctorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ["id", "firstname", "lastname", "specialization", "max_appointments_per_day", "email", "gender"]
+    
+class DoctorCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ["firstname", "lastname", "specialization", "email", "gender"]
+    
+class DoctorPublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ["firstname", "lastname", "specialization", "max_appointments_per_day", "gender"]
+
+class DoctorUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ["firstname", "lastname", "specialization", "email"]

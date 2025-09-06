@@ -1,11 +1,16 @@
-from .models import Patient
+from .models import Patient, Doctor
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .serializers import (
     PatientCreateSerializer,
     PatientPublicSerializer,
     PatientUpdateSerializer,
-    RegisterSerializer
+    RegisterSerializer,
+
+    DoctorSerializer,
+    DoctorPublicSerializer,
+    DoctorCreateSerializer,
+    DoctorUpdateSerializer
 )
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -42,7 +47,7 @@ def patient_detail(request, pk):
         return Response(serializer.data, status=200)
 
     elif request.method == "PUT":
-        serializer = PatientUpdateSerializer(patient, data=request.data)
+        serializer = PatientUpdateSerializer(patient, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -64,3 +69,48 @@ def register(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# ----- Doctor endpoints -----
+
+@api_view(["GET", "POST"])
+def doctors_list(request):
+    if request.method == "GET":
+        doctors = Doctor.objects.all()
+        serializer = DoctorPublicSerializer(doctors, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return Response({"detail": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        serializer = DoctorCreateSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET", "PUT", "DELETE"])
+def doctor_detail(request, pk):
+    try:
+        doctor = Doctor.objects.get(pk=pk)
+    except Doctor.DoesNotExist:
+        return Response({"msg": "Doctor Not Found"}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        serializer = DoctorPublicSerializer(doctor)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    elif request.method == "PUT":
+        serializer = DoctorUpdateSerializer(doctor, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "DELETE":
+        doctor.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
