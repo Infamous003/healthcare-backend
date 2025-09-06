@@ -50,10 +50,6 @@ def patient_detail(request, pk):
         serializer = PatientPublicSerializer(patient)
         return Response(serializer.data, status=200)
 
-    # Making sure that only the user who owns the patient can edit/delete them
-    if patient.created_by != request.user:
-            return Response({"detail": "Not allowed"}, status=status.HTTP_403_FORBIDDEN)
-
     elif request.method == "PUT":
         serializer = PatientUpdateSerializer(patient, data=request.data, partial=True)
         if serializer.is_valid():
