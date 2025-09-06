@@ -11,7 +11,7 @@ class PatientSerializer(serializers.ModelSerializer):
 class PatientPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
-        fields = ["firstname", "lastname", "age", "gender", "created_by"]
+        fields = ["id", "firstname", "lastname", "age", "gender", "created_by"]
 
 class PatientCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -58,7 +58,7 @@ class DoctorCreateSerializer(serializers.ModelSerializer):
 class DoctorPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
-        fields = ["firstname", "lastname", "specialization", "max_appointments_per_day", "gender"]
+        fields = ["id", "firstname", "lastname", "specialization", "max_appointments_per_day", "gender"]
 
 class DoctorUpdateSerializer(serializers.ModelSerializer):
     class Meta:

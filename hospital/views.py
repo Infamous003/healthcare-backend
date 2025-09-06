@@ -33,8 +33,9 @@ def patients_list(request):
         serializer = PatientCreateSerializer(data=request.data)
 
         if serializer.is_valid():
-            serializer.save(created_by=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            patient = serializer.save(created_by=request.user)
+            resp_serializer = PatientPublicSerializer(patient)
+            return Response(resp_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -91,8 +92,9 @@ def doctors_list(request):
         serializer = DoctorCreateSerializer(data=request.data)
 
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            doctor = serializer.save()
+            resp_serializer = DoctorPublicSerializer(doctor)
+            return Response(resp_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET", "PUT", "DELETE"])

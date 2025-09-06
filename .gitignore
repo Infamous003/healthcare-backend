@@ -6,6 +6,7 @@ __pycache__/
 # virtual environments
 .venv
 .env
+.coverage
 
 # C extensions
 *.so
