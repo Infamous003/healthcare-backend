@@ -14,5 +14,5 @@ urlpatterns = [
 
     path("mappings/", views.mappings_list),
     path("mappings/<int:patient_id>/", views.mapping_detail),
-    path("mappings/<int:pk>/delete/", views.mapping_delete),
+    path("mappings/<int:pk>/<int:doc_id>/", views.mapping_delete),
 ]

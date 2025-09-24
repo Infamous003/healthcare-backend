@@ -135,7 +135,8 @@ def mappings_list(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail":"Mapping already exists"}, status=status.HTTP_409_CONFLICT)
 
 @api_view(["GET"])
 def mapping_detail(request, patient_id):
@@ -153,15 +154,16 @@ def mapping_detail(request, patient_id):
         # Serializing the docs
         serializer = DoctorPublicSerializer(doctors, many=True)
         resp = {
+            "patient_id": f"{patient.id}",
             "patient": f"{patient.firstname} {patient.lastname}",
             "doctors": serializer.data
         }
         return Response(resp, status=status.HTTP_200_OK)
 
 @api_view(["DELETE"])
-def mapping_delete(request, pk):
+def mapping_delete(request, pk, doc_id):
     try:
-        mapping = PatientDoctorMapping.objects.get(pk=pk)
+        mapping = PatientDoctorMapping.objects.get(pk=pk, doctor_id=doc_id)
     except PatientDoctorMapping.DoesNotExist:
         return Response({"detail": "Mapping not found"}, status=status.HTTP_404_NOT_FOUND)
     
