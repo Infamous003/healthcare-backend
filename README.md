@@ -1,11 +1,39 @@
 # healthcare-backend
 
-This is the solution for the WhatBytes assignment. 
-It is a backend for a hospital management system built with Django, DRF, and PostgreSQL as the database. It uses JWT-based Authentication. Use an API client like cURL or Postman or RestFox
+A RESTful hospital management backend built with Django, Django REST Framework, and PostgreSQL.
 
-## Test coverage
-- Wrote test cases for Auth, Patients, and Doctor endpoints. With 15+ testcases. 
-- Coverage report
+This project models core healthcare workflows, including patient management, doctor management, and patient–doctor assignments. It implements JWT-based auth, relational data modeling, protected endpoints, and comprehensive test coverage.
+
+## Tech Stack
+- Django
+- Django Rest Framework
+- PostgreSQL
+
+## Features
+**Authentication**
+- User registration and login
+- JWT-based authentication
+- Protected endpoints using DRF permission classes
+
+**Patient Management**
+- Create, retrieve, update, and delete patients
+- Ownership tracking via created_by foreign key
+- Auth-protected access
+
+**Doctor Management**
+- Full CRUD support for doctors
+- Auth-protected endpoints
+
+**Patient–Doctor Assignment**
+- Assign doctors to patients via mapping model
+- Timestamped assignments
+- Retrieve all doctors assigned to a patient
+- Retrieve all mappings with nested patient and doctor representations
+
+## Testing & Coverage
+- 15+ unit tests covering authentication, patient, doctor, and mapping endpoints
+- 88% overall test coverage
+- Tests validate authentication flows, protected routes, and core business logic
 
 ```bash
 Name                                                                              Stmts   Miss  Cover
@@ -26,34 +54,40 @@ hospital/views.py                                                               
 TOTAL                                                                               333     39    88%
 ```
 
-## Features:
-- Endpoint for patients
-- Endpoints for doctors
-- Endpoints for authentication
-- Endpoints for Patient-Doctor Mappings
-
-
 ### Setup instructions:
-- Create a virtual environment and activate it
-- Install all the dependencies in the requirements
-- Install postgresql and create a database called "healthcare_db"
-- Create a .env file and fill in the following credentials:
-```bash
-DEBUG=True
-SECRET_KEY=your_secret_key
-DATABASE_NAME=healthcare_db
-DATABASE_USER=postgres
-DATABASE_PASSWORD=your_password
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-```
-- Apply migrations
-- Run the test cases
-```json
-coverage run --source='hospital' manage.py test
-```
-- Run the server
 
+1. Clone the repository
+   ```bash
+   git clone https://github.com/Infamous003/healthcare-backend
+   cd healthcare-backend
+   ```
+2. Create virtual environment
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Windows: venv\Scripts\activate
+   ```
+3. Install dependencies
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Configure environment variables
+   ```bash
+   DEBUG=True
+   SECRET_KEY=your_secret_key
+   DATABASE_NAME=healthcare_db
+   DATABASE_USER=postgres
+   DATABASE_PASSWORD=your_password
+   DATABASE_HOST=localhost
+   DATABASE_PORT=5432
+   ```
+5. Apply migrations
+   ```bash
+   python manage.py migrate
+   ```
+6. Run server
+   ```bash
+   python manage.py runserver
+   ```
 ### API endpoints:
 
 #### Authentication: 
